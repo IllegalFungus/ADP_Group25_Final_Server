@@ -14,32 +14,36 @@ import javax.swing.JOptionPane;
 
 public class ServerDAO {
     private Connection connection;
-    User user;
-    Course course;
-    UserCourse userCourse;
+    private User user;
+    private Course course;
+    private UserCourse userCourse;
+    private PreparedStatement stmt;
+    private int userID, courseID, UserCourseID;
+    private String userName, userSurname, userPassword;
+    private boolean isAdmin;
     
     
 public ServerDAO(){
         try {
-            connection = DBConnection.getConnection();
+            this.connection = DBConnection.getConnection();
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
 }
 
 public User Login(User user){
-    String query = "SELECT * FROM Admin WHERE userID = ? ";
-    try(PreparedStatement stmt = connection.prepareStatement(query)){
-        stmt.setInt(1, user.getUserID());
-        ResultSet resultSet = stmt.executeQuery();
+    try {
+        stmt = this.connection.prepareStatement("SELECT * FROM DBADMIN.USERS WHERE userID = ?");
+                stmt.setInt(1, user.getUserID()); 
+            ResultSet resultSet = stmt.executeQuery();
         while (resultSet.next()){
-            String userName = resultSet.getString("uName");
-            String userSurname = resultSet.getString("uSurname");
-            String userPassword = resultSet.getString("uPassword");
-            boolean Admin = resultSet.getBoolean("Admin");
+            userName = resultSet.getString("userName");
+            userSurname = resultSet.getString("userSurname");
+            userPassword = resultSet.getString("userPassword");
+            isAdmin = resultSet.getBoolean("isAdmin");
             
             if((user.getPass()).equals(userPassword)){
-                user = new User(user.getUserID(), userName, userSurname, userPassword, Admin);
+                user = new User(user.getUserID(), userName, userSurname, userPassword, isAdmin);
                 return user;
             } else {
                 JOptionPane.showMessageDialog(null, "3");

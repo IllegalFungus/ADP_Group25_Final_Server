@@ -67,21 +67,23 @@ public class ClientServer_Server {
                         User newUser = (User) receivedObject;
                         //First Function: Login.
                         if (newUser.getFunction().equals("Login")) {
+                            
                             Login = dao.Login(newUser);
-                            if (Login != null)
-                            {
-                                JOptionPane.showMessageDialog(null, "User, " + Login.getUserFName()
-                                    + " " + Login.getUserLName() + " is successfully logged in!");
-                                try
-                                {
-                                    out.writeObject(Login);
-                                    out.flush();
-                                }
-                                catch (IOException ioe)
-                                {
-                                    System.out.println("IO Exception: " + ioe.getMessage());
-                                }
-                            }
+                            JOptionPane.showMessageDialog(null, Login.getUserFName());
+//                            if (Login != null)
+//                            {
+//                                JOptionPane.showMessageDialog(null, "User, " + Login.getUserFName()
+//                                    + " " + Login.getUserLName() + " is successfully logged in!");
+//                                try
+//                                {
+//                                    out.writeObject(Login);
+//                                    out.flush();
+//                                }
+//                                catch (IOException ioe)
+//                                {
+//                                    System.out.println("IO Exception: " + ioe.getMessage());
+//                                }
+//                            }
                         //Second Function: Add User.
                         } else if (newUser.getFunction().equals("addUser")) {
                             //Send user object to database to add.
@@ -211,6 +213,7 @@ public class ClientServer_Server {
                             {
                                 System.out.println("IO Exception in enroll user server: " + ioe.getMessage());
                             } 
+                        //Twelfth Function: Unenroll User.
                         } else if (newUC.getFunction().equals("Unenroll")) {
                             //Enroll user into the database.
                             dao.unenrollUser(newUC);
